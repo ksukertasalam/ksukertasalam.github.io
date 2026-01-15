@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KSU Kertasalam</title>
+  <style>
+    :root{
+      --bg:#0b1220; --card:#111a2e; --muted:#9fb0d2; --text:#eaf1ff;
+      --accent:#1e88e5; --accent2:#2ecc71; --danger:#ff5d6c; --line:#203056;
+      --shadow: 0 12px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
+      background:radial-gradient(1200px 700px at 20% -10%, rgba(30,136,229,.22), transparent 50%),
+                 radial-gradient(900px 600px at 110% 10%, rgba(46,204,113,.18), transparent 45%),
+                 var(--bg);
+      color:var(--text);
+    }
+    a{color:inherit}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo-img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  border-radius:12px;
+  background:#ffffff;
+  padding:6px;
+  box-shadow:var(--shadow);
+}
+    h1{font-size:18px;margin:0}
+    .sub{font-size:12px;color:var(--muted);margin-top:2px}
+    .pill{
+      display:flex;gap:10px;align-items:center;
+      padding:10px 12px;border:1px solid var(--line);border-radius:14px;
+      background:rgba(17,26,46,.75);backdrop-filter: blur(8px);
+    }
+    input, select, textarea{
+      width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--line);
+      background:#0d162a; color:var(--text); outline:none;
+    }
+    input::placeholder, textarea::placeholder{color:#6f86b4}
+    .grid{display:grid;grid-template-columns: 1.7fr .9fr; gap:18px; margin-top:18px}
+    @media (max-width: 920px){ .grid{grid-template-columns:1fr} }
+    .card{
+      border:1px solid var(--line); border-radius:18px; background:rgba(17,26,46,.72);
+      box-shadow:var(--shadow); overflow:hidden;
+    }
+    .card .hd{padding:16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .card .bd{padding:16px}
+    .row{display:flex;gap:10px;align-items:center}
+    .muted{color:var(--muted);font-size:12px}
+    .btn{
+      appearance:none;border:0;border-radius:14px;padding:10px 12px;
+      background:linear-gradient(135deg,var(--accent),#2f7bff);
+      color:#061022;font-weight:700;cursor:pointer;box-shadow:0 10px 24px rgba(77,163,255,.25);
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn.secondary{
+      background:#0d162a;color:var(--text);border:1px solid var(--line);box-shadow:none;font-weight:600;
+    }
+    .btn.danger{
+      background:rgba(255,93,108,.12); color:#ffd0d5; border:1px solid rgba(255,93,108,.35);
+      box-shadow:none;
+    }
+    .products{display:grid;grid-template-columns: repeat(3, 1fr); gap:14px}
+    @media (max-width: 980px){ .products{grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 520px){ .products{grid-template-columns: 1fr;} }
+    .p{
+      padding:14px;border-radius:18px;border:1px solid var(--line);background:rgba(13,22,42,.55);
+      display:flex;flex-direction:column;gap:10px;
+    }
+    .img{
+      height:120px;border-radius:16px;border:1px solid rgba(255,255,255,.06);
+      background:linear-gradient(135deg, rgba(77,163,255,.25), rgba(102,242,194,.18));
+      position:relative; overflow:hidden;
+    }
+    .badge{
+      position:absolute; top:10px; left:10px; font-size:11px; font-weight:700;
+      padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.12);
+    }
+    .p h3{margin:0;font-size:14px}
+    .price{font-weight:800;font-size:15px}
+    .meta{display:flex;justify-content:space-between;gap:8px;align-items:center}
+    .tag{font-size:11px;color:#cfe3ff;padding:4px 10px;border-radius:999px;border:1px solid rgba(77,163,255,.35);background:rgba(77,163,255,.10)}
+    .cart-item{
+      display:grid;grid-template-columns: 1fr auto; gap:10px; padding:12px; border:1px solid var(--line);
+      border-radius:16px; background:rgba(13,22,42,.55); margin-bottom:10px;
+    }
+    .qty{display:flex;gap:6px;align-items:center}
+    .qty button{
+      width:34px;height:34px;border-radius:12px;border:1px solid var(--line);background:#0d162a;color:var(--text);cursor:pointer;
+      font-weight:700;
+    }
+    .qty span{min-width:24px;text-align:center;font-weight:800}
+    .total{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid var(--line);margin-top:10px}
+    .hr{height:1px;background:var(--line);margin:12px 0}
+    .small{font-size:12px}
+    .success{color:var(--accent2)}
+    .note{font-size:12px;color:var(--muted);line-height:1.45}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <img src="logo-ksu.png" alt="Logo KSU Kertasalam" class="logo-img" />
+        <div>
+          <h1>KSU Kertasalam</h1>
+          <div class="sub">KSU Kertasalam</div>
+        </div>
+      </div>
+
+      <div class="pill" style="min-width:340px;flex:1;max-width:520px">
+        <div style="flex:1">
+          <input id="q" placeholder="Cari produk… (misal: beras, gula, deterjen)" />
+        </div>
+        <div style="width:160px">
+          <select id="cat">
+            <option value="all">Semua</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="pill">
+        <div class="row">
+          <div class="muted">Cart</div>
+          <div id="cartCount" style="font-weight:900">0</div>
+        </div>
+        <button class="btn secondary" id="clearCart">Kosongkan</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Store -->
+      <section class="card">
+        <div class="hd">
+          <div>
+            <div style="font-weight:900">Produk</div>
+            <div class="muted">Klik “Tambah” untuk masuk ke keranjang.</div>
+          </div>
+          <div class="row" style="gap:8px;min-width:260px">
+            <div style="flex:1"><input id="min" placeholder="Min (Rp)" inputmode="numeric"></div>
+            <div style="flex:1"><input id="max" placeholder="Max (Rp)" inputmode="numeric"></div>
+          </div>
+        </div>
+        <div class="bd">
+          <div class="products" id="products"></div>
+        </div>
+      </section>
+
+      <!-- Cart -->
+      <aside class="card">
+        <div class="hd">
+          <div>
+            <div style="font-weight:900">Keranjang</div>
+            <div class="muted">Atur qty, voucher, lalu checkout.</div>
+          </div>
+        </div>
+        <div class="bd">
+          <div id="cart"></div>
+
+          <div class="hr"></div>
+
+          <div class="row" style="gap:10px">
+            <div style="flex:1">
+              <input id="voucher" placeholder="Voucher (contoh: DISKON10)" />
+              <div class="muted" style="margin-top:6px">DISKON10 = potongan 10% (maks Rp50.000)</div>
+            </div>
+            <button class="btn secondary" id="applyVoucher">Pakai</button>
+          </div>
+
+          <div class="row" style="margin-top:10px; gap:10px">
+            <div style="flex:1">
+              <input id="buyer" placeholder="Nama pembeli" />
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:10px; gap:10px">
+            <div style="flex:1">
+              <textarea id="note" rows="3" placeholder="Catatan (warna, ukuran, alamat ringkas, dll)"></textarea>
+            </div>
+          </div>
+
+          <div class="total">
+            <div>
+              <div class="muted">Total</div>
+              <div style="font-size:20px;font-weight:950" id="grandTotal">Rp0</div>
+              <div class="small muted" id="discInfo"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;align-items:stretch;min-width:170px">
+              <button class="btn" id="checkout">Checkout WA</button>
+              <button class="btn danger" id="resetVoucher">Reset Voucher</button>
+            </div>
+          </div>
+
+          <div class="note" style="margin-top:12px">
+            Tips: Ganti nomor WA di kode (variabel <b>WHATSAPP_NUMBER</b>) agar tombol checkout langsung ke admin toko.
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+<script>
+  // =========================
+  // Konfigurasi toko
+  // =========================
+  const STORE_NAME = "KSU Kertasalam";
+  const WHATSAPP_NUMBER = "6281234567890"; // ganti ke nomor admin toko (format internasional tanpa +)
+
+    const PRODUCTS = [
+    { id:"p1", name:"Beras Premium 5kg", price:78000, category:"Sembako", badge:"Favorit" },
+    { id:"p2", name:"Gula Pasir 1kg", price:17500, category:"Sembako", badge:"Hemat" },
+    { id:"p3", name:"Minyak Goreng 2L", price:36000, category:"Sembako", badge:"Promo" },
+    { id:"p4", name:"Telur Ayam 1kg", price:31000, category:"Sembako", badge:"Fresh" },
+    { id:"p5", name:"Tepung Terigu 1kg", price:14500, category:"Sembako", badge:"Best" },
+    { id:"p6", name:"Air Mineral 600ml (Dus 24)", price:52000, category:"Minuman", badge:"Value" },
+    { id:"p7", name:"Sabun Cuci Piring 800ml", price:19000, category:"Kebersihan", badge:"Wajib" },
+    { id:"p8", name:"Deterjen Bubuk 1.8kg", price:42000, category:"Kebersihan", badge:"Hemat" },
+    { id:"p9", name:"Token Listrik (PLN) Rp50.000", price:50000, category:"Digital", badge:"Cepat" },
+  ];
+
+  // =========================
+  // Util
+  // =========================
+  const rupiah = (n) => new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n);
+  const byId = (id) => document.getElementById(id);
+  const lsKey = "simple_store_cart_v1";
+  const lsVoucherKey = "simple_store_voucher_v1";
+
+  const state = {
+    cart: loadCart(),
+    voucher: loadVoucher(), // {code, discount}
+  };
+
+  function loadCart(){
+    try{ return JSON.parse(localStorage.getItem(lsKey)) ?? {}; }catch{ return {}; }
+  }
+  function saveCart(){
+    localStorage.setItem(lsKey, JSON.stringify(state.cart));
+  }
+  function loadVoucher(){
+    try{ return JSON.parse(localStorage.getItem(lsVoucherKey)) ?? null; }catch{ return null; }
+  }
+  function saveVoucher(){
+    localStorage.setItem(lsVoucherKey, JSON.stringify(state.voucher));
+  }
+
+  function cartCount(){
+    return Object.values(state.cart).reduce((a,b)=>a+b,0);
+  }
+
+  function cartSubtotal(){
+    return Object.entries(state.cart).reduce((sum,[id,qty])=>{
+      const p = PRODUCTS.find(x=>x.id===id);
+      return sum + (p ? p.price*qty : 0);
+    },0);
+  }
+
+  function calcDiscount(subtotal){
+    if(!state.voucher) return 0;
+    // Contoh aturan voucher:
+    // DISKON10: 10% maks 50.000, minimum belanja 100.000
+    if(state.voucher.code === "DISKON10"){
+      if(subtotal < 100000) return 0;
+      const disc = Math.floor(subtotal * 0.10);
+      return Math.min(disc, 50000);
+    }
+    return 0;
+  }
+
+  // =========================
+  // Render kategori
+  // =========================
+  function initCategory(){
+    const cats = ["all", ...Array.from(new Set(PRODUCTS.map(p=>p.category)))];
+    const sel = byId("cat");
+    sel.innerHTML = cats.map(c=>`<option value="${c}">${c==="all" ? "Semua" : c}</option>`).join("");
+  }
+
+  // =========================
+  // Render produk
+  // =========================
+  function renderProducts(){
+    const q = byId("q").value.trim().toLowerCase();
+    const cat = byId("cat").value;
+    const min = parseInt((byId("min").value||"").replace(/[^\d]/g,"")) || 0;
+    const maxRaw = (byId("max").value||"").replace(/[^\d]/g,"");
+    const max = maxRaw ? parseInt(maxRaw) : Infinity;
+
+    const filtered = PRODUCTS.filter(p=>{
+      const okQ = !q || p.name.toLowerCase().includes(q);
+      const okC = (cat==="all") || (p.category===cat);
+      const okP = p.price >= min && p.price <= max;
+      return okQ && okC && okP;
+    });
+
+    byId("products").innerHTML = filtered.map(p=>`
+      <div class="p">
+        <div class="img">
+          <div class="badge">${p.badge}</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+          <div>
+            <h3>${p.name}</h3>
+            <div class="muted">${p.category}</div>
+          </div>
+          <div class="tag">${rupiah(p.price)}</div>
+        </div>
+        <div class="meta">
+          <div class="price">${rupiah(p.price)}</div>
+          <button class="btn" onclick="addToCart('${p.id}')">Tambah</button>
+        </div>
+      </div>
+    `).join("") || `<div class="muted">Tidak ada produk yang cocok.</div>`;
+  }
+
+  // =========================
+  // Render cart
+  // =========================
+  function renderCart(){
+    byId("cartCount").textContent = cartCount();
+
+    const entries = Object.entries(state.cart)
+      .map(([id,qty])=>{
+        const p = PRODUCTS.find(x=>x.id===id);
+        if(!p) return null;
+        const line = p.price*qty;
+        return {id, qty, p, line};
+      })
+      .filter(Boolean);
+
+    if(entries.length===0){
+      byId("cart").innerHTML = `<div class="muted">Keranjang kosong. Tambahkan produk dulu ya.</div>`;
+    } else {
+      byId("cart").innerHTML = entries.map(({id,qty,p,line})=>`
+        <div class="cart-item">
+          <div>
+            <div style="font-weight:900">${p.name}</div>
+            <div class="muted">${p.category} • ${rupiah(p.price)} / item</div>
+            <div style="margin-top:6px;font-weight:900">${rupiah(line)}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+            <div class="qty">
+              <button onclick="decQty('${id}')">-</button>
+              <span>${qty}</span>
+              <button onclick="incQty('${id}')">+</button>
+            </div>
+            <button class="btn danger" onclick="removeItem('${id}')">Hapus</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    const subtotal = cartSubtotal();
+    const discount = calcDiscount(subtotal);
+    const grand = Math.max(subtotal - discount, 0);
+
+    byId("grandTotal").textContent = rupiah(grand);
+
+    const info = [];
+    info.push(`Subtotal: ${rupiah(subtotal)}`);
+    if(state.voucher){
+      if(discount>0){
+        info.push(`Voucher ${state.voucher.code}: -${rupiah(discount)}`);
+      } else {
+        info.push(`Voucher ${state.voucher.code} tidak memenuhi syarat (min Rp100.000).`);
+      }
+    }
+    byId("discInfo").textContent = info.join(" • ");
+  }
+
+  // =========================
+  // Cart actions
+  // =========================
+  window.addToCart = (id)=>{
+    state.cart[id] = (state.cart[id]||0) + 1;
+    saveCart();
+    renderCart();
+  }
+  window.incQty = (id)=>{
+    state.cart[id] = (state.cart[id]||0) + 1;
+    saveCart(); renderCart();
+  }
+  window.decQty = (id)=>{
+    state.cart[id] = Math.max((state.cart[id]||0) - 1, 0);
+    if(state.cart[id]===0) delete state.cart[id];
+    saveCart(); renderCart();
+  }
+  window.removeItem = (id)=>{
+    delete state.cart[id];
+    saveCart(); renderCart();
+  }
+
+  // =========================
+  // Voucher
+  // =========================
+  function applyVoucher(){
+    const code = (byId("voucher").value||"").trim().toUpperCase();
+    if(!code) return;
+
+    // Validasi voucher contoh
+    const valid = ["DISKON10"];
+    if(!valid.includes(code)){
+      alert("Voucher tidak dikenal. Coba: DISKON10");
+      return;
+    }
+    state.voucher = { code };
+    saveVoucher();
+    renderCart();
+    alert("Voucher diterapkan: " + code);
+  }
+
+  function resetVoucher(){
+    state.voucher = null;
+    saveVoucher();
+    byId("voucher").value = "";
+    renderCart();
+  }
+
+  // =========================
+  // Checkout via WhatsApp
+  // =========================
+  function checkout(){
+    const entries = Object.entries(state.cart);
+    if(entries.length===0){
+      alert("Keranjang masih kosong.");
+      return;
+    }
+    const buyer = (byId("buyer").value||"").trim() || "Pembeli";
+    const note = (byId("note").value||"").trim();
+
+    const subtotal = cartSubtotal();
+    const discount = calcDiscount(subtotal);
+    const grand = Math.max(subtotal - discount, 0);
+
+    const lines = [];
+    lines.push(`Halo Admin ${STORE_NAME} 👋`);
+    lines.push(`Saya mau order:`);
+    lines.push("");
+
+    entries.forEach(([id,qty],i)=>{
+      const p = PRODUCTS.find(x=>x.id===id);
+      if(!p) return;
+      lines.push(`${i+1}. ${p.name} x${qty} = ${rupiah(p.price*qty)}`);
+    });
+
+    lines.push("");
+    lines.push(`Subtotal: ${rupiah(subtotal)}`);
+    if(state.voucher){
+      lines.push(`Voucher: ${state.voucher.code} (${discount>0 ? "-"+rupiah(discount) : "tidak memenuhi syarat"})`);
+    }
+    lines.push(`Total: ${rupiah(grand)}`);
+    lines.push("");
+    lines.push(`Nama: ${buyer}`);
+    if(note) lines.push(`Catatan: ${note}`);
+    lines.push("");
+    lines.push(`Mohon info ongkir & total final ya. Terima kasih 🙏`);
+
+    const text = encodeURIComponent(lines.join("\n"));
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
+    window.open(url, "_blank");
+  }
+
+  // =========================
+  // Events
+  // =========================
+  ["q","cat","min","max"].forEach(id=>{
+    byId(id).addEventListener("input", renderProducts);
+    byId(id).addEventListener("change", renderProducts);
+  });
+
+  byId("clearCart").addEventListener("click", ()=>{
+    if(confirm("Kosongkan keranjang?")){
+      state.cart = {};
+      saveCart();
+      renderCart();
+    }
+  });
+
+  byId("applyVoucher").addEventListener("click", applyVoucher);
+  byId("resetVoucher").addEventListener("click", resetVoucher);
+  byId("checkout").addEventListener("click", checkout);
+
+  // Init
+  initCategory();
+  renderProducts();
+  renderCart();
+  if(state.voucher) byId("voucher").value = state.voucher.code;
+</script>
+</body>
+</html>
