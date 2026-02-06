@@ -548,34 +548,6 @@
   const STORE_NAME = "KSU Kertasalam";
   const WHATSAPP_NUMBER = "6287714919415"; // ganti ke nomor admin toko (format internasional tanpa +)
 
-  // =========================
-  // WhatsApp opener (mobile-friendly)
-  // - Hindari window.open() yang sering diblok di HP / in-app browser
-  // - Gunakan api.whatsapp.com sebagai default, fallback ke wa.me
-  // =========================
-  function openWhatsAppWithText(encodedText){
-    const phone = String(WHATSAPP_NUMBER || "").replace(/\D/g,""); // pastikan hanya angka (contoh: 62812...)
-    const urlApi = `https://api.whatsapp.com/send?phone=${phone}&text=${encodedText}`;
-    const urlMe  = `https://wa.me/${phone}?text=${encodedText}`;
-
-    // Coba metode paling kompatibel dulu
-    try{
-      window.location.assign(urlApi);
-    } catch(e){
-      window.location.href = urlApi;
-    }
-
-    // Fallback: jika masih di halaman yang sama (mis. diblok), coba wa.me
-    setTimeout(()=>{
-      try{
-        if(!document.hidden){
-          window.location.assign(urlMe);
-        }
-      }catch(e){}
-    }, 900);
-  }
-
-
   const CATEGORIES = ["Produk Salambogor","Nursery and Agriculture", "Fashion", "Produk Literasi", "Perabot dan Peralatan Rumah Tangga", "Outdoor and Sport",  "Elektronik", "Kebutuhan Pokok", "Daging dan Ikan", "Jasa", "Mitra KSU", "Preloved", "Top Up", "ATK", "Otomotif", "Logam Mulia"];
 
 
@@ -892,6 +864,17 @@ function productImage(p){
         const c = btn.getAttribute("data-cat");
         byId("cat").value = c;
         renderProducts();
+        // Catalog mode (persist)
+  const savedCatalog = localStorage.getItem(catalogKey) === "1";
+  const cb = document.getElementById("catalogMode");
+  if(cb){
+    cb.checked = savedCatalog;
+    cb.addEventListener("change", ()=> setCatalogMode(cb.checked));
+  }
+  if(savedCatalog) document.body.classList.add("catalog");
+
+  renderChips();
+  if(savedCatalog) setCatalogMode(true);
 
       });
     });
@@ -1123,7 +1106,7 @@ function productImage(p){
     lines.push("Boleh info stok/ketersediaan & cara ordernya ya. Terima kasih 🙏");
     const text = encodeURIComponent(lines.join("\n"));
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
-    openWhatsAppWithText(text);
+    window.open(url, "_blank");
   };
 
 
@@ -1196,7 +1179,7 @@ function productImage(p){
 
     const text = encodeURIComponent(lines.join("\n"));
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
-    openWhatsAppWithText(text);
+    window.open(url, "_blank");
   }
 
   
